@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+:root{
+    --borderStyle: 2px gray solid
+}
+body {
+    font-family: "ariel", sans-serif;
+    margin: 25px auto;
+    width: calc(100vw - 30px);
+    max-width: 1280px;
+}
+
+#editorSection textarea{
+    max-width: 100%;
+    resize: vertical;
+}
+
+#editorSection #customMainHtml{
+    display: block;
+}
+
+#editorSection{
+    resize: horizontal;
+    overflow: auto;
+}
+
+#preview{
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    padding-top: 1.5em;
+}
+
+#previewMenu{
+    position: absolute;
+    bottom: 100%;
+    background: white;
+    padding: 0px 10px;
+    right: 20px;
+    transform: translate(0%, 50%);
+}
+
+#rawCode{
+    display: block; background: #424141; color: white; padding: 10px; border-radius: 5px;
+}
+#editorSection,
+#editorSection input {
+    font-family: "Rubik", sans-serif;
+    color: black;
+}
+
+
+/*Main Containner*/
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem 10px;
+}
+
+.container>* {
+
+    border: var(--borderStyle);
+    border-radius: 5px;
+    padding: 15px;
+}
+
+/*Button*/
+#editorSection button,
+button.EditorStyle {
+    border:  var(--borderStyle);
+    border-radius: 4px;
+    padding: 5px 8px;
+    background: none;
+}
+
+#editorSection button:disabled,
+button.EditorStyle:disabled {
+    border-color: rgb(197, 197, 197);
+}
+
+
+#editorSection button:not(:disabled):hover,
+button.EditorStyle:not(:disabled):hover {
+    background: #dbdbdb;
+}
+
+/*Editor style*/
+#editor *:not(:last-child) {
+    margin-bottom: 0.8em;
+}
+
+#editorSection>*:first-child{
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: var(--borderStyle);
+    position: relative;
+}
+
+#editorSection>*:first-child div{
+    margin-bottom: 5px;
+    position: absolute;
+    bottom: 110%;
+    z-index: inherit;
+    background: white;
+    right: 0;
+}
+
+
+#editor .componentTitle{
+    margin-top: 0.8em;
+    margin-bottom: 0px;
+    font-weight: 500;
+    font-size: 0.8em;
+    color: gray;
+}
+#editor .inputFloat{
+    clear:  both;
+    float: right;
+    width: 2em;
+    margin: 0;
+    min-width: min-content;
+    margin-bottom: 10px;
+}
+
+div#componentInputs ~ button:not(:last-child) {
+    margin-right: 5px;
+}
+
+#editor input[type=number].inputFloat{
+    min-width: auto;
+}
+
+#editor details{
+    clear:  both;
+}
+
+
+.contextMenu{
+    position: absolute;
+    display: none;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    padding: 5px;
+    z-index: 1000;
+    border-radius: 4px;
+}
+
+.contextMenu button,.contextMenu label  {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.8em;
+    border-radius: 2px;
+}
+
+.contextMenu label {
+    width: auto;
+    max-width: 100%;
+}
+
+.contextMenu button:hover, .contextMenu label:hover {
+    background: #ddd;
+}
+
+.contextMenu span{
+    display: block;
+    font-size: 0.7em;
+    color: gray;
+    border-bottom: solid 1px;
+}
+
+.contextMenu input{
+    display: none;
+}
+
+#editorSection *:first-child .linkAction{
+    font-size: 0.7em;
+    text-decoration: underline;
+    padding: 0px 2px;
+    background: none;
+    border: none;
+}
+
+#editorSection *:first-child .linkAction:hover,
+ #editorSection *:first-child .linkAction:focus-visible{
+    color: rgb(80, 154, 174);
+}
+
+.buttonNoStyle{
+    border: none !important;
+    background: none !important;
+}
+.buttonNoStyle:hover,
+.buttonNoStyle:focus-visible{
+    background: rgb(238, 238, 238) !important;
+}
+
+#rendered{
+    width: 100%;
+    border: none;
+}
+
+footer{
+    font-size: 0.8rem;
+    color: gray;
+    margin-top: 15px;
+    padding-top: 5px;
+}

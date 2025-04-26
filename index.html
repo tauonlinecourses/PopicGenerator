@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popic Generator</title>
+    <script src="./Code/PopicGeneratorCode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="./Style/GeneratorStyle.css">
+    <link rel="icon" type="image/x-icon" href="./Img/Logo.svg">
+</head>
+
+<body>
+    <div class="container">
+        <div id="editorSection">
+            <div>
+                <label for="templateSelector">Select Template:</label>
+                <select id="templateSelector"></select>
+                <button id="templateOptionsButton" class="buttonNoStyle">&#8942;</button>
+            </div>
+    
+            <div id="editor"></div>
+        </div>
+
+        <div id="preview">
+            <div id="previewMenu">
+                <button class="EditorStyle" onclick="togglePreview()">Toggle Code</button>
+                <button class="EditorStyle"onclick="copyCode()">Copy Code</button>
+                <button id="saveImageBut" class="EditorStyle"onclick="renderHtmlAsPng()">Save image</button>
+            </div>
+
+            <iframe id="rendered" dir="rtl"></iframe>
+            <span id="rawCode" style="display: none;"></pre>
+        </div>
+    </div>
+<div id="code-block">
+    
+</div>
+
+<div id="contextMenu" class="contextMenu">
+    <button id="applyForAllBtn">Apply to all instance</button>
+    <button id="copyBtn">Copy</button>
+    <button id="pasteBtn" disabled>Paste</button>
+    <button id="pasteAllBtn" disabled>Paste to all instance</button>
+</div>
+
+<div id="TampletSelectOptions" class="contextMenu">
+    <button id="clearTempletsBtn" onclick="clearSelection()">Clear</button>
+    <label for="uploadJsonBtn" class="linkAction">Upload</label>
+    <input type="file" id="uploadJsonBtn" accept=".json, .txt" />
+    <label for="replaceJsonBtn" class="linkAction">Replace</label>
+    <input type="file" id="replaceJsonBtn" accept=".json, .txt" />
+    <button id="downloadJsonBtn" class="linkAction">Downlond</button>
+    <button onclick="addExamples()">Example</button>
+</div>
+
+<div id="contextMenuConvertTextToParm" class="contextMenu">
+    <span>convert to:</span>
+    <button onmousedown="replaceSelectedTextAuto('New Component', 'component')">Component</button>
+    <button onmousedown="replaceSelectedTextAuto('New Parameter','text')" >Parameter</button>
+</div>
+
+<div id="contextMenuSaveImage" class="contextMenu">
+    <span>PNG</span>
+    <button onmousedown="renderHtmlAsPng(2)" >X2</button>
+    <button onmousedown="renderHtmlAsPng(3)" >X3</button>
+    <span>JPG</span>
+    <button onmousedown="renderHtmlAsPng(1,'jpg')" >X1</button>
+    <button onmousedown="renderHtmlAsPng(2,'jpg')" >X2</button>
+    <button onmousedown="renderHtmlAsPng(3,'jpg')" >X3</button>
+</div>
+
+
+<!-- <div id="popupCon" class="popupBack">
+    <div class="popup">
+        <div>
+            <label for="PopupSelectParameterName">Select name</label>
+            <input type="text" id="PopupSelectParameterName"/>
+        </div>
+        <div id="popupSelectDropdown">
+            <label for="PopupSelectParameterType">Select type</label>
+            <select name="PopupSelectParameterType" id="PopupSelectParameterType">
+                <option value="color">Color</option>
+                <option value="date">Date</option>
+                <option value="datetime-local">Datetime Local</option>
+                <option value="email">Email</option>
+                <option value="Month">month</option>
+                <option value="number">Number</option>
+                <option value="time">Time</option>
+                <option value="week">Week</option>
+              </select>
+        </div>
+        <div>
+            <button id="popupSubmit">Add Parameter</button>
+            <button onclick="hidePopup()">Cencle</button>
+            <span id="PopupError"></span>
+        </div>
+
+    </div>
+</div> -->
+
+<footer>Created by Yarden Zilberman</footer>
+</body>
+
+</html>
