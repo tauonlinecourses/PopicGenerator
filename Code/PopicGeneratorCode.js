@@ -1232,7 +1232,7 @@ function initializeContextMenu() {
   document.getElementById("pasteBtn").addEventListener("click", async () => {
     if (contextMenu.targetInput && copiedValue !== null) {
       contextMenu.targetInput.value = copiedValue;
-      const inputEvent = new Event("input");
+      const inputEvent = new Event("change");
       contextMenu.targetInput.dispatchEvent(inputEvent);
     }
     hideContextMenu();
@@ -1285,7 +1285,7 @@ function applayValueToAllInctance(value, instanceElement) {
     const otherKey = (otherInput.dataset.key || "").replace(/\d+$/, "").trim();
     if (otherInput.type === inputType && otherKey === baseKey) {
       otherInput.value = valueToPaste;
-      const inputEvent = new Event("input");
+      const inputEvent = new Event("change");
       otherInput.dispatchEvent(inputEvent);
     }
   });
