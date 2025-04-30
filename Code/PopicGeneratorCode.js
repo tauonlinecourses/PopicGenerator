@@ -13,6 +13,7 @@ let contextMenu_SaveImage;
 let currentTemplate = "";
 let values = {};
 let repeatComponentSaving = []; // Stores component repeat counts
+let savePreviewValues = {};
 
 //Template definitions
 // const templates = [
@@ -245,11 +246,15 @@ function populateTemplates() {
   templateSelector.appendChild(customOption);
 }
 
-function toggleCustomTemplateEditor() {
+function toggleCustomTemplateEditor(willResateSaveValues = true) {
   const selected = templateSelector.value;
   console.log(selected);
   const isCustom = selected === "custom";
   editor.innerHTML = "";
+
+  if(willResateSaveValues){
+    savePreviewValues = {};
+  }
 
   if (isCustom) {
     generateCustom();
@@ -271,7 +276,7 @@ function generateCustom(templateBase) {
     const indexOfTamp = templates.findIndex((tamp) => tamp.name == templateBase.name);
     BackButton.onclick = () => {
       templateSelector.value = indexOfTamp;
-      toggleCustomTemplateEditor();
+      toggleCustomTemplateEditor(false);
     }
 
     editor.appendChild(BackButton);
@@ -828,7 +833,7 @@ function createComponentInput(label) {
  * @param {HTMLInputElement} input - The input element that triggered the update
  * @param {string} componentName - Name of the component to update
  */
-function updateComponentOnly(input, componentName) {
+function updateComponentOnly(input, componentName, skipNum=-1) {
   // Get the new repeat count
   const newRepeatCount = parseInt(input.value);
   const oldRepeatCount = getComponentRepeatCount(componentName);
@@ -845,9 +850,19 @@ function updateComponentOnly(input, componentName) {
   const inputs = detailsElement.querySelectorAll('input');
   inputs.forEach(input => {
     if (input.dataset.key && input.dataset.key !== componentName) {
-      savedValues[input.dataset.key] = input.value;
+      let [_, inputName, inputRow] = input.dataset.key.match(/^(.*?)(\d+)$/) || [];
+      inputRow = Number(inputRow);
+      if(inputRow!=skipNum){
+        if(inputRow>skipNum && skipNum!=-1){
+          inputRow--;
+          input.dataset.key = inputName+inputRow.toString();
+        }
+        savedValues[input.dataset.key] = input.value;
+      }
     }
   });
+
+  savePreviewValues = savedValues;
 
   // Clear the details element contents except for the summary
   const summary = detailsElement.querySelector('summary');
@@ -873,7 +888,22 @@ function updateComponentOnly(input, componentName) {
     // Create component title
     const subTitle = document.createElement('div');
     subTitle.classList.add("componentTitle");
-    subTitle.textContent = componentName + i;
+    // subTitle.textContent = componentName + i;
+
+    const removeBut = document.createElement("button");
+    removeBut.innerText="Remove";
+    removeBut.className = "inputFloat removeBut";
+    removeBut.addEventListener("click",()=>{
+      input.value--;
+      updateComponentOnly(input,componentName,i);
+    });
+
+    subTitle.appendChild(removeBut);
+
+    const titleName = document.createElement("span");
+    titleName.innerText = componentName + i;
+    subTitle.appendChild(titleName);
+    
     detailsElement.appendChild(subTitle);
 
     // Extract placeholders from component HTML
@@ -914,7 +944,10 @@ function updateComponentOnly(input, componentName) {
       }
 
       input.dataset.key = indexedLabel;
-      input.addEventListener('change', updatePreview);
+      input.addEventListener('change', ()=>{
+        updatePreview();
+        updateSavePreviewValues(indexedLabel,input.value);
+      });
 
       // Create label element
       const labelEl = document.createElement('label');
@@ -945,7 +978,23 @@ function updateComponentOnly(input, componentName) {
 function createComponentTitle(label) {
   const subTitle = document.createElement('div');
   subTitle.classList.add("componentTitle");
-  subTitle.textContent = label;
+  // subTitle.textContent = label;
+  
+  const removeBut = document.createElement("button");
+  removeBut.innerText="Remove";
+  removeBut.className = "inputFloat removeBut";
+  removeBut.addEventListener("click",()=>{
+    const [_, componentName, ComponentNum] = label.match(/^(.*?)(\d+)$/) || [];
+    console.log("componenetName " + componentName);
+    const input = document.querySelector(`input.inputFloat[type="number"][data-key="${componentName}"]`);
+    input.value--;
+    updateComponentOnly(input,componentName,ComponentNum);
+  });
+  subTitle.appendChild(removeBut);
+
+  const titleName = document.createElement("span");
+  titleName.innerText = label;
+  subTitle.appendChild(titleName);
 
   // Find parent container
   let parentContainer = editor;
@@ -959,6 +1008,11 @@ function createComponentTitle(label) {
   parentContainer.appendChild(subTitle);
 }
 
+function updateSavePreviewValues(fullInputId,newValue){
+  savePreviewValues[fullInputId] = newValue;
+  console.log(savePreviewValues);
+}
+
 /**
  * Create a regular input field
  * @param {string} label - Input label
@@ -969,9 +1023,14 @@ function createRegularInput(label, type, defaultValue) {
   // Create input element
   const input = document.createElement('input');
   input.type = type;
-  input.value = defaultValue || "";
+  input.value = savePreviewValues[label] || defaultValue || "";
   input.dataset.key = label;
-  input.addEventListener('change', updatePreview);
+  input.addEventListener('change', ()=>{
+    updatePreview();
+    updateSavePreviewValues(label,input.value);
+  });
+
+  updateSavePreviewValues(label,input.value);
 
   if (type == "file") {
 
