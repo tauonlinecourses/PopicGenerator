@@ -946,7 +946,7 @@ function updateComponentOnly(input, componentName, skipNum=-1) {
       input.dataset.key = indexedLabel;
       input.addEventListener('change', ()=>{
         updatePreview();
-        updateSavePreviewValues(indexedLabel,input.value);
+        updateSavePreviewValues(indexedLabel,input.value,input.type);
       });
 
       // Create label element
@@ -1008,7 +1008,10 @@ function createComponentTitle(label) {
   parentContainer.appendChild(subTitle);
 }
 
-function updateSavePreviewValues(fullInputId,newValue){
+function updateSavePreviewValues(fullInputId,newValue,inputType){
+  if(inputType=="file"){
+    return;
+  }
   savePreviewValues[fullInputId] = newValue;
   console.log(savePreviewValues);
 }
@@ -1027,10 +1030,10 @@ function createRegularInput(label, type, defaultValue) {
   input.dataset.key = label;
   input.addEventListener('change', ()=>{
     updatePreview();
-    updateSavePreviewValues(label,input.value);
+    updateSavePreviewValues(label,input.value,type);
   });
 
-  updateSavePreviewValues(label,input.value);
+  updateSavePreviewValues(label,input.value,type);
 
   if (type == "file") {
 
